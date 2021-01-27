@@ -8,7 +8,6 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.idd.springboot.crudapp.entity.Product;
 
@@ -19,7 +18,6 @@ public class ProductDAOImpl implements ProductDAO {
 	private EntityManager entityManager;
 
 	@Override
-	@Transactional
 	public List<Product> getProducts() {
 		// get the current hibernate session
 		Session currentSession = entityManager.unwrap(Session.class);
@@ -35,7 +33,6 @@ public class ProductDAOImpl implements ProductDAO {
 	}
 
 	@Override
-	@Transactional
 	public Product getProduct(int theId) {
 		// get the current hibernate session
 		Session currentSession = entityManager.unwrap(Session.class);
@@ -47,7 +44,6 @@ public class ProductDAOImpl implements ProductDAO {
 	}
 
 	@Override
-	@Transactional
 	public void deleteProduct(int theId) {
 		// get the current hibernate session
 		Session currentSession = entityManager.unwrap(Session.class);

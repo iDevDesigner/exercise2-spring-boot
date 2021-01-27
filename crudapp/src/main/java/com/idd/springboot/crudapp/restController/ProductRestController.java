@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.idd.springboot.crudapp.dao.ProductDAO;
 import com.idd.springboot.crudapp.entity.Product;
+import com.idd.springboot.crudapp.service.ProductService;
 
 @RestController
 @RequestMapping("/api")
 public class ProductRestController {
 
 	@Autowired
-	private ProductDAO productDAO;
+	private ProductService productService;
 
 	@GetMapping("/")
 	public String sayHello() {
@@ -33,7 +33,7 @@ public class ProductRestController {
 	@GetMapping("/products")
 	public List<Product> getCustomers() {
 
-		return productDAO.getProducts();
+		return productService.getProducts();
 
 	}
 
@@ -43,13 +43,13 @@ public class ProductRestController {
 	public ResponseEntity<?> getCustomer(@PathVariable int produtId) {
 
 		try {
-			Product theProduct = productDAO.getProduct(produtId);
+			Product theProduct = productService.getProduct(produtId);
 
 			if (theProduct != null) {
 				return ResponseEntity.status(HttpStatus.OK).body(theProduct);
 
 			} else {
-				productDAO.deleteProduct(produtId);
+				productService.deleteProduct(produtId);
 				Map<String, String> errors = new LinkedHashMap<>();
 				errors.put("status", "404");
 				errors.put("error", "Not Found");
@@ -60,7 +60,7 @@ public class ProductRestController {
 
 		} catch (Exception e) {
 
-			productDAO.deleteProduct(produtId);
+			productService.deleteProduct(produtId);
 			Map<String, String> errors = new LinkedHashMap<>();
 			errors.put("status", "404");
 			errors.put("error", "Not Found");
@@ -75,15 +75,15 @@ public class ProductRestController {
 	@DeleteMapping("/products/{produtId}")
 	public ResponseEntity<?> deleteCustomer(@PathVariable int produtId) {
 
-		Product tempProd = productDAO.getProduct(produtId);
+		Product tempProd = productService.getProduct(produtId);
 
 		// Handling null condition
 		if (tempProd != null) {
-			productDAO.deleteProduct(produtId);
+			productService.deleteProduct(produtId);
 			return ResponseEntity.status(HttpStatus.OK).body("Product Deleted Successfully!");
 
 		} else {
-			productDAO.deleteProduct(produtId);
+			productService.deleteProduct(produtId);
 			Map<String, String> errors = new LinkedHashMap<>();
 			errors.put("status", "404");
 			errors.put("error", "Not Found");
